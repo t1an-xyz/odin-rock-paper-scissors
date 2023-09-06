@@ -18,12 +18,30 @@
                 'scissors': {'rock':-1,'scissors':0,'paper':1},
                 'paper': {'rock':1,'scissors':-1,'paper':0}
             };
-            let outcome = outcomeMatrix[playerSelection.toLowerCase()][computerSelection]
+            let outcome = outcomeMatrix[playerSelection.toLowerCase()][computerSelection];
+            
             if (outcome == 1)
-                return `You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase()} beats ${computerSelection}.`;
-            if (outcome == 0) return `Tie!`;
+                console.log(`You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase()} beats ${computerSelection}.`);
+            if (outcome == 0) console.log(`Tie!`);
             if (outcome == -1)
-                return `You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase()} beats ${playerSelection}.`;
+                console.log(`You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase()} beats ${playerSelection}.`);
+
+            return outcome;
+        }
+
+        function game() {
+            let playerScore = 0;
+            let computerScore = 0;
+            while (playerScore + computerScore < 5) {
+                let playerChoice = prompt('Rock, paper, scissors, shoot!').toLowerCase();
+                while (playerChoice != 'rock' && playerChoice != 'scissors' && playerChoice != 'paper')
+                    playerChoice = prompt('Rock, paper, scissors, shoot!').toLowerCase();
+                
+                let outcome = round(playerChoice, getComputerChoice());
+                if (outcome < 0) computerScore++;
+                else playerScore += outcome;
+            }
+            console.log(playerScore > computerScore ? "You win!" : "You lose!");
         }
     </script>
 </body>
