@@ -11,6 +11,20 @@
             const choices = ['rock','paper','scissors'];
             return choices[Math.floor(Math.random() * choices.length)];
         }
+
+        function round(playerSelection, computerSelection) {
+            const outcomeMatrix = {
+                'rock': {'rock':0,'scissors':1,'paper':-1},
+                'scissors': {'rock':-1,'scissors':0,'paper':1},
+                'paper': {'rock':1,'scissors':-1,'paper':0}
+            };
+            let outcome = outcomeMatrix[playerSelection.toLowerCase()][computerSelection]
+            if (outcome == 1)
+                return `You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase()} beats ${computerSelection}.`;
+            if (outcome == 0) return `Tie!`;
+            if (outcome == -1)
+                return `You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase()} beats ${playerSelection}.`;
+        }
     </script>
 </body>
 </html>
