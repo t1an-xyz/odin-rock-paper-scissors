@@ -1,48 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
 </head>
+
 <body>
+    <div id="choices">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+
+    <div id="results"></div>
+
     <script>
         function getComputerChoice() {
-            const choices = ['rock','paper','scissors'];
+            const choices = ['rock', 'paper', 'scissors'];
             return choices[Math.floor(Math.random() * choices.length)];
         }
 
         function round(playerSelection, computerSelection) {
             const outcomeMatrix = {
-                'rock': {'rock':0,'scissors':1,'paper':-1},
-                'scissors': {'rock':-1,'scissors':0,'paper':1},
-                'paper': {'rock':1,'scissors':-1,'paper':0}
+                'rock': { 'rock': 0, 'scissors': 1, 'paper': -1 },
+                'scissors': { 'rock': -1, 'scissors': 0, 'paper': 1 },
+                'paper': { 'rock': 1, 'scissors': -1, 'paper': 0 }
             };
             let outcome = outcomeMatrix[playerSelection.toLowerCase()][computerSelection];
-            
+
+            const resultsDiv = document.getElementById('results');
             if (outcome == 1)
-                console.log(`You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase()} beats ${computerSelection}.`);
-            if (outcome == 0) console.log(`Tie!`);
+                resultsDiv.innerText = `You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase()} beats ${computerSelection}.`;
+            if (outcome == 0) resultsDiv.innerText = `It's a tie!`;
             if (outcome == -1)
-                console.log(`You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase()} beats ${playerSelection}.`);
+                resultsDiv.innerText = `You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase()} beats ${playerSelection}.`;
 
             return outcome;
         }
 
-        function game() {
-            let playerScore = 0;
-            let computerScore = 0;
-            while (playerScore + computerScore < 5) {
-                let playerChoice = prompt('Rock, paper, scissors, shoot!').toLowerCase();
-                while (playerChoice != 'rock' && playerChoice != 'scissors' && playerChoice != 'paper')
-                    playerChoice = prompt('Rock, paper, scissors, shoot!').toLowerCase();
-                
-                let outcome = round(playerChoice, getComputerChoice());
-                if (outcome < 0) computerScore++;
-                else playerScore += outcome;
+        let playerScore = 0;
+        let computerScore = 0;
+        let rounds = 0;
+
+        let buttons = document.getElementById('choices');
+        buttons.addEventListener('click', function (e) {
+            if (rounds < 5) {
+                let outcome = round(e.target.id, getComputerChoice());
+                switch (outcome) {
+                    case 1:
+                        playerScore++;
+                        break;
+                    case -1:
+                        computerScore++;
+                        break;
+                }
+                rounds++;
             }
-            console.log(playerScore > computerScore ? "You win!" : "You lose!");
-        }
+            if (rounds == 5) {
+                let resultsDiv = document.getElementById('results');
+                if (playerScore > computerScore) {
+                    resultsDiv.innerText = `You win the game! ${playerScore} to ${computerScore}`;
+                } else if (playerScore < computerScore) {
+                    resultsDiv.innerText = `You lose the game! ${computerScore} to ${playerScore}`;
+                } else {
+                    resultsDiv.innerText = `It's a tie! ${playerScore} to ${computerScore}`;
+                }
+            }
+        });
     </script>
 </body>
+
 </html>
